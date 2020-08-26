@@ -17,6 +17,7 @@
 package kr.heartpattern.spikot.config
 
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.inventory.ItemStack
 import kotlin.reflect.KClass
 
 internal fun YamlConfiguration.getByType(key: String, type: KClass<*>): Any? {
@@ -30,9 +31,10 @@ internal fun YamlConfiguration.getByType(key: String, type: KClass<*>): Any? {
         Long::class -> getLong(key)
         Float::class -> getDouble(key)
         Double::class -> getDouble(key)
-        Char::class -> getString(key)[0]
+        Char::class -> getString(key)?.get(0)
         Boolean::class -> getBoolean(key)
         String::class -> getString(key)
+        ItemStack::class -> getItemStack(key)
         else -> null
     }
 }
@@ -51,6 +53,7 @@ internal fun YamlConfiguration.getListByType(key: String, type: KClass<*>): Muta
         Char::class -> getCharacterList(key)
         Boolean::class -> getBooleanList(key)
         String::class -> getStringList(key)
+        ItemStack::class -> getList(key)
         else -> mutableListOf<Any>()
     }
 }

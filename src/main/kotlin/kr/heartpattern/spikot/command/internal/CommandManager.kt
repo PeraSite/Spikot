@@ -57,7 +57,7 @@ object CommandManager : AbstractModule() {
                 @Suppress("UNCHECKED_CAST")
                 val tabExecutor = SpikotTabExecutor(CommandNode(type as KClass<out AbstractCommand>), plugin)
                 val command = pluginCommandConstructor.newInstance(tabExecutor.root.handler.names.first(), plugin)
-                command.executor = tabExecutor
+                command.setExecutor(tabExecutor)
                 command.tabCompleter = tabExecutor
                 command.aliases = tabExecutor.root.handler.names.toList()
                 command.description = tabExecutor.root.handler.help()
@@ -65,7 +65,7 @@ object CommandManager : AbstractModule() {
 
                 val helpExecutor = SpikotTabExecutor(CommandNode(type), plugin)
                 val help = pluginCommandConstructor.newInstance("?" + helpExecutor.root.handler.names.first(), plugin)
-                help.executor = helpExecutor
+                help.setExecutor(helpExecutor)
                 help.tabCompleter = helpExecutor
                 help.aliases = helpExecutor.root.handler.names.map { "?$it" }
 

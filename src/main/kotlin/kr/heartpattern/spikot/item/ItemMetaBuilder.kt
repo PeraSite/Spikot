@@ -42,7 +42,7 @@ open class ItemMetaBuilder<T : ItemMeta>(internal val itemMeta: T) {
     var displayName: String
         get() = itemMeta.displayName
         set(value) {
-            itemMeta.displayName = ChatColor.RESET + value
+            itemMeta.setDisplayName(ChatColor.RESET + value)
         }
 
     /**
@@ -51,7 +51,16 @@ open class ItemMetaBuilder<T : ItemMeta>(internal val itemMeta: T) {
     var localizedName: String
         get() = itemMeta.localizedName
         set(value) {
-            itemMeta.displayName = value
+            itemMeta.setDisplayName(value)
+        }
+
+    /**
+     * Custom model data of item
+     */
+    var customModelData: Int
+        get() = itemMeta.customModelData
+        set(value) {
+            itemMeta.setCustomModelData(value)
         }
 
     /**

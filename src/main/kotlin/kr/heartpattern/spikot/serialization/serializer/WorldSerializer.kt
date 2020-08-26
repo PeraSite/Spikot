@@ -17,19 +17,26 @@
 package kr.heartpattern.spikot.serialization.serializer
 
 import kotlinx.serialization.*
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import org.bukkit.Bukkit
 import org.bukkit.World
+import java.security.InvalidParameterException
 import java.util.*
 
 @Serializer(forClass = World::class)
 object WorldSerializer : KSerializer<World> {
-    override val descriptor: SerialDescriptor = PrimitiveDescriptor("World", PrimitiveKind.STRING)
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("World", PrimitiveKind.STRING)
 
     override fun serialize(encoder: Encoder, value: World) {
         encoder.encodeString(value.uid.toString())
     }
 
     override fun deserialize(decoder: Decoder): World {
-        return Bukkit.getWorld(UUID.fromString(decoder.decodeString()))
+        val uuid = UUID.fromString(decoder.decodeString())
+        return Bukkit.getWorld(uuid) ?: throw InvalidParameterException("World has $uuid is not exist")
     }
 }

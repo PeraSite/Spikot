@@ -81,7 +81,7 @@ internal suspend fun resolve(key: String): PlayerProfile {
         val connection = url.openConnection()
         connection.setRequestProperty("User-Agent", "Spikot")
         val data = connection.getInputStream().bufferedReader().readText()
-        jsonSerializer.parse(PlayerProfile.serializer(), data)
+        jsonSerializer.decodeFromString(PlayerProfile.serializer(), data)
     }
 }
 

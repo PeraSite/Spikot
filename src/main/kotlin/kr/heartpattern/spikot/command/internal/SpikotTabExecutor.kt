@@ -23,7 +23,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
 
 internal class SpikotTabExecutor(val root: CommandNode, val plugin: SpikotPlugin) : TabExecutor {
-    override fun onCommand(sender: CommandSender, command: Command?, label: String, args: Array<out String>): Boolean {
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         root.execute(CommandContext(plugin, sender, label, args.toList()))
         return true
     }

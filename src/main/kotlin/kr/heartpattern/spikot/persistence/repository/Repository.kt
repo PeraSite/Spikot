@@ -38,4 +38,6 @@ abstract class AbstractRepository<S : Storage> : AbstractModule(), Repository<S>
     override fun onDisable() {
         storage.disable()
     }
+
+    abstract fun reload()
 }

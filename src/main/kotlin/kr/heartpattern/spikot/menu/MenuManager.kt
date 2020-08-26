@@ -50,7 +50,7 @@ internal object MenuOpenProperty : MutableFlagProperty
  */
 fun Player.safeOpenInventory(inventory: Inventory) {
     spikot.runNextSync {
-        if (!player.isOnline) return@runNextSync
+        if (!isOnline) return@runNextSync
         this.openInventory(inventory)
     }
 }
@@ -61,7 +61,7 @@ fun Player.safeOpenInventory(inventory: Inventory) {
  */
 fun Player.safeCloseInventory() {
     spikot.runNextSync {
-        if (!player.isOnline) return@runNextSync
+        if (!isOnline) return@runNextSync
         this.closeInventory()
     }
 }
@@ -91,7 +91,7 @@ fun Player.openInventory(plugin: SpikotPlugin, menuProvider: MenuProvider) {
     }
     inventory.contents = contents
     handler.context[MenuOpenProperty] = true
-    player.safeOpenInventory(inventory)
+    safeOpenInventory(inventory)
 }
 
 /**
@@ -100,9 +100,9 @@ fun Player.openInventory(plugin: SpikotPlugin, menuProvider: MenuProvider) {
  * @param T Type of MenuProvider
  */
 inline fun <reified T : MenuProvider> Player.getOpenedInventory(): T? {
-    val title = player.openInventory.title
-    if (title.isNullOrBlank() || !title.hasInvisible()) return null
-    return MenuManager.openedInventory[title.findInvisible()] as? T
+    val title = openInventory.title
+    if (title.isBlank() || !title.hasInvisible()) return null
+    return MenuManager.openedInventory[title.findInvisible()]?.module as? T
 }
 
 @ServerModule(ModulePriority.API)

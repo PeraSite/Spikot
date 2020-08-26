@@ -17,8 +17,11 @@
 package kr.heartpattern.spikot.persistence.storage.file
 
 import kotlinx.serialization.*
-import kotlinx.serialization.modules.EmptyModule
-import kotlinx.serialization.modules.SerialModule
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.modules.EmptySerializersModule
+import kotlinx.serialization.modules.SerializersModule
 
 class SingleStringDecoder(
     value: String
@@ -31,8 +34,8 @@ class SingleStringDecoder(
             return field
         }
 
-    override val context: SerialModule
-        get() = EmptyModule
+    override val serializersModule: SerializersModule
+        get() = EmptySerializersModule
     override val updateMode: UpdateMode
         get() = UpdateMode.BANNED
 
@@ -89,7 +92,4 @@ class SingleStringDecoder(
         return value
     }
 
-    override fun decodeUnit() {
-        accessed = true
-    }
 }

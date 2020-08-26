@@ -18,8 +18,6 @@ package kr.heartpattern.spikot.serialization
 
 import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
-import kotlinx.serialization.modules.SerialModule
 import kotlinx.serialization.modules.SerializersModule
 import kr.heartpattern.spikot.module.AbstractModule
 import kr.heartpattern.spikot.module.ModulePriority
@@ -30,10 +28,10 @@ import kr.heartpattern.spikot.utils.getInstance
 
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-@FindAnnotation(impl = [SerialModule::class])
+@FindAnnotation(impl = [SerializersModule::class])
 annotation class SerializationModule
 
-val serializationModule: SerialModule
+val serializationModule: SerializersModule
     get() = SerializationModuleRegistry.serializationModule
 
 val jsonSerializer: Json
@@ -44,7 +42,7 @@ val yamlSerializer: Yaml
 
 @ServerModule(priority = ModulePriority.SYSTEM)
 object SerializationModuleRegistry : AbstractModule() {
-    lateinit var serializationModule: SerialModule
+    lateinit var serializationModule: SerializersModule
         private set
     lateinit var jsonSerializer: Json
         private set
@@ -54,10 +52,12 @@ object SerializationModuleRegistry : AbstractModule() {
     override fun onEnable() {
         serializationModule = SerializersModule {
             SpikotPluginManager.forEachAnnotation<SerializationModule> { (type, _, _) ->
-                include(type.getInstance() as SerialModule)
+                include(type.getInstance() as SerializersModule)
             }
         }
-        jsonSerializer = Json(JsonConfiguration.Stable, serializationModule)
+        jsonSerializer = Json {
+            serializersModule = this@SerializationModuleRegistry.serializationModule
+        }
         yamlSerializer = Yaml(serializationModule)
     }
 }

@@ -47,6 +47,6 @@ class LeatherArmorItemMetaBuilder(itemMeta: LeatherArmorMeta) : ItemMetaBuilder<
     var color: Color
         get() = itemMeta.color
         set(value) {
-            itemMeta.color = value
+            itemMeta.setColor(value)
         }
 }

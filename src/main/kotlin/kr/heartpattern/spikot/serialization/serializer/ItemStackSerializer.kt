@@ -17,6 +17,11 @@
 package kr.heartpattern.spikot.serialization.serializer
 
 import kotlinx.serialization.*
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import kr.heartpattern.spikot.item.decodeItemStack
 import kr.heartpattern.spikot.item.encode
 import org.bukkit.inventory.ItemStack
@@ -24,7 +29,7 @@ import java.util.*
 
 @Serializer(forClass = ItemStack::class)
 object ItemStackSerializer : KSerializer<ItemStack> {
-    override val descriptor: SerialDescriptor = PrimitiveDescriptor("ItemStack", PrimitiveKind.STRING)
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("ItemStack", PrimitiveKind.STRING)
 
     override fun serialize(encoder: Encoder, value: ItemStack) {
         encoder.encodeString(

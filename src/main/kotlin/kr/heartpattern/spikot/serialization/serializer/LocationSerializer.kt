@@ -16,20 +16,28 @@
 
 package kr.heartpattern.spikot.serialization.serializer
 
-import kotlinx.serialization.*
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerialDescriptor
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.Serializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.encoding.CompositeDecoder
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import org.bukkit.Location
 import org.bukkit.World
 
 @Serializer(forClass = Location::class)
 object LocationSerializer : KSerializer<Location> {
-    override val descriptor: SerialDescriptor = SerialDescriptor("Location") {
+    override val descriptor: SerialDescriptor = buildClassSerialDescriptor("Location") {
         element("world", String.serializer().descriptor)
         element("x", Double.serializer().descriptor)
         element("y", Double.serializer().descriptor)
         element("z", Double.serializer().descriptor)
-        element("pitch", Double.serializer().descriptor)
         element("yaw", Double.serializer().descriptor)
+        element("pitch", Double.serializer().descriptor)
     }
 
     override fun serialize(encoder: Encoder, value: Location) {
@@ -54,7 +62,7 @@ object LocationSerializer : KSerializer<Location> {
             var yaw: Float? = null
             loop@ while (true) {
                 when (val i = decodeElementIndex(descriptor)) {
-                    CompositeDecoder.READ_DONE -> break@loop
+                    CompositeDecoder.DECODE_DONE -> break@loop
                     0 -> world = decodeSerializableElement(descriptor, i, WorldSerializer)
                     1 -> x = decodeDoubleElement(descriptor, i)
                     2 -> y = decodeDoubleElement(descriptor, i)
@@ -65,12 +73,12 @@ object LocationSerializer : KSerializer<Location> {
             }
             endStructure(descriptor)
             return Location(
-                world ?: throw MissingFieldException("world"),
-                x ?: throw MissingFieldException("x"),
-                y ?: throw MissingFieldException("y"),
-                z ?: throw MissingFieldException("z"),
+                world ?: throw SerializationException("world"),
+                x ?: throw SerializationException("x"),
+                y ?: throw SerializationException("y"),
+                z ?: throw SerializationException("z"),
+                yaw ?: 0f,
                 pitch ?: 0f,
-                yaw ?: 0f
             )
         }
     }

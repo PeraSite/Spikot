@@ -21,7 +21,7 @@ import org.bukkit.event.Listener
 import org.bukkit.plugin.EventExecutor
 
 class SimpleEventExecutor<E : Event>(val listener: (E) -> Unit) : EventExecutor {
-    override fun execute(listener: Listener?, event: Event) {
+    override fun execute(listener: Listener, event: Event) {
         listener(event as E)
     }
 }

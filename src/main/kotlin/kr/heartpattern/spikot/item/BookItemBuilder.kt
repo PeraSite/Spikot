@@ -43,7 +43,7 @@ class BookItemMetaBuilder(itemMeta: BookMeta) : ItemMetaBuilder<BookMeta>(itemMe
     /**
      * Author of book
      */
-    var author: String
+    var author: String?
         get() = itemMeta.author
         set(value) {
             itemMeta.author = value
@@ -52,7 +52,7 @@ class BookItemMetaBuilder(itemMeta: BookMeta) : ItemMetaBuilder<BookMeta>(itemMe
     /**
      * Title of book
      */
-    var title: String
+    var title: String?
         get() = itemMeta.title
         set(value) {
             itemMeta.title = value

@@ -17,13 +17,18 @@
 package kr.heartpattern.spikot.serialization.serializer
 
 import kotlinx.serialization.*
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 import java.util.*
 
 @Serializer(forClass = OfflinePlayer::class)
 object OfflinePlayerSerializer : KSerializer<OfflinePlayer> {
-    override val descriptor: SerialDescriptor = PrimitiveDescriptor("OfflinePlayer", PrimitiveKind.STRING)
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("OfflinePlayer", PrimitiveKind.STRING)
 
     override fun serialize(encoder: Encoder, value: OfflinePlayer) {
         encoder.encodeString(value.uniqueId.toString())

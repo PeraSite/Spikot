@@ -75,7 +75,7 @@ class HotEventExecutor<E : Event> : EventExecutor {
     val removeQueue = LinkedBlockingQueue<UUID>()
 
     @Suppress("UNCHECKED_CAST")
-    override fun execute(listener: Listener?, event: Event) {
+    override fun execute(listener: Listener, event: Event) {
         var remove = removeQueue.poll()
         while (remove != null) {
             val removed = listeners.remove(remove)

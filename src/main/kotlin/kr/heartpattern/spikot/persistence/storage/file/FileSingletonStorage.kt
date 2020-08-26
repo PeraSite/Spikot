@@ -19,6 +19,7 @@ package kr.heartpattern.spikot.persistence.storage.file
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.encodeToString
 import kr.heartpattern.spikot.misc.Just
 import kr.heartpattern.spikot.misc.None
 import kr.heartpattern.spikot.misc.Option
@@ -26,6 +27,7 @@ import kr.heartpattern.spikot.module.AbstractModule
 import kr.heartpattern.spikot.persistence.storage.SingletonStorage
 import kr.heartpattern.spikot.serialization.StringSerializeFormat
 import java.io.File
+import java.lang.RuntimeException
 
 open class FileSingletonStorage<V> private constructor(
     val serializer: KSerializer<V>,
@@ -59,7 +61,7 @@ open class FileSingletonStorage<V> private constructor(
     override suspend fun get(): Option<V> {
         return if (file.exists()) {
             withContext(Dispatchers.IO) {
-                Just(format.serializer.parse(serializer, file.readText()))
+                Just(format.serializer.decodeFromString(serializer, file.readText()))
             }
         } else {
             None
@@ -70,7 +72,11 @@ open class FileSingletonStorage<V> private constructor(
         withContext(Dispatchers.IO) {
             if (value is Just) {
                 file.createNewFile()
-                file.writeText(format.serializer.stringify(serializer, value.value))
+                try {
+                    file.writeText(format.serializer.encodeToString(serializer, value.value))
+                } catch (ex: Exception) {
+                    throw RuntimeException("${file.name} save exception: value = ${value.value.toString()}")
+                }
             } else {
                 file.delete()
             }

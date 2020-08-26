@@ -52,7 +52,7 @@ data class SlotPosition(val x: Int, val y: Int) {
     /**
      * Get responding slot for given inventory
      */
-    fun getSlot(inventory: Inventory): ItemStack = inventory.getItem(index)
+    fun getSlot(inventory: Inventory): ItemStack? = inventory.getItem(index)
 }
 
 /**

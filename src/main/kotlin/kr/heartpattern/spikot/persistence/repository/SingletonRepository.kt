@@ -16,6 +16,8 @@
 
 package kr.heartpattern.spikot.persistence.repository
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.KSerializer
 import kr.heartpattern.spikot.misc.Just
@@ -65,6 +67,15 @@ abstract class SingletonRepository<V>(
             storage.set(value)
         }
         super.onDisable()
+    }
+
+    override fun reload() {
+        plugin.launch(Dispatchers.IO) {
+            value = when (val result = storage.get()) {
+                is Just -> result
+                is None -> Just(default())
+            }
+        }
     }
 
     fun get(): V {

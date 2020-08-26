@@ -47,7 +47,7 @@ class PotionItemMetaBuilder(itemMeta: PotionMeta) : ItemMetaBuilder<PotionMeta>(
     /**
      * Color of potion
      */
-    var color: Color
+    var color: Color?
         get() = itemMeta.color
         set(value) {
             itemMeta.color = value
@@ -83,7 +83,7 @@ class PotionDataBuilder {
     /**
      * Type of potion
      */
-    var type: PotionType? = null
+    lateinit var type: PotionType
 
     private var isExtended: Boolean = false
     private var isUpgraded: Boolean = false
@@ -120,7 +120,7 @@ class PotionEffectBuilder {
     /**
      * Type of potion effect
      */
-    var type: PotionEffectType? = null
+    lateinit var type: PotionEffectType
 
     /**
      * Duration of potion effect
@@ -135,7 +135,7 @@ class PotionEffectBuilder {
     /**
      * Color of potion effect
      */
-    var color: Color? = null
+    lateinit var color: Color
 
     private var isAmbient: Boolean = false
     private var isParticles: Boolean = false
@@ -160,6 +160,8 @@ class PotionEffectBuilder {
      * Create PotionEffect from this builder
      * @return PotionEffect configured by this builder
      */
-    fun toPotionEffect(): PotionEffect = if (color == null) PotionEffect(type, duration, amplifier, isAmbient, isParticles)
-    else PotionEffect(type, duration, amplifier, isAmbient, isParticles, color)
+    fun toPotionEffect(): PotionEffect {
+        return PotionEffect(type, duration, amplifier, isAmbient, isParticles)
+    }
+
 }

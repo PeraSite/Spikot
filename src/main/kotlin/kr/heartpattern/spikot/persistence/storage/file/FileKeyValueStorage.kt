@@ -19,6 +19,7 @@ package kr.heartpattern.spikot.persistence.storage.file
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.stringify
 import kr.heartpattern.spikot.misc.Just
 import kr.heartpattern.spikot.misc.None
 import kr.heartpattern.spikot.misc.Option
@@ -27,6 +28,7 @@ import kr.heartpattern.spikot.module.AbstractModule
 import kr.heartpattern.spikot.persistence.storage.KeyValueStorage
 import kr.heartpattern.spikot.serialization.StringSerializeFormat
 import java.io.File
+import java.lang.RuntimeException
 
 open class FileKeyValueStorage<K, V> private constructor(
     private val keySerializer: KSerializer<K>,
@@ -80,7 +82,11 @@ open class FileKeyValueStorage<K, V> private constructor(
             val file = File(directory, serialize(keySerializer, key) + ".${format.fileExtensionName}")
             if (value is Just) {
                 file.createNewFile()
-                file.writeText(format.serializer.stringify(valueSerializer, value.value))
+                try {
+                    file.writeText(format.serializer.encodeToString(valueSerializer, value.value))
+                } catch (ex: Exception) {
+                    throw RuntimeException("${directory.name}} save exception: key = ${key.toString()}, value = ${value.value.toString()}")
+                }
             } else {
                 file.delete()
             }
@@ -91,7 +97,7 @@ open class FileKeyValueStorage<K, V> private constructor(
         return withContext(Dispatchers.IO) {
             val file = File(directory, serialize(keySerializer, key) + ".${format.fileExtensionName}")
             if (file.exists()) {
-                format.serializer.parse(valueSerializer, file.readText()).just
+                format.serializer.decodeFromString(valueSerializer, file.readText()).just
             } else {
                 None
             }

@@ -16,6 +16,8 @@
 
 package kr.heartpattern.spikot.persistence.repository.keyvalue
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.KSerializer
 import kr.heartpattern.spikot.misc.None
@@ -64,6 +66,17 @@ abstract class KeyValueRepository<K : Any, V : Any>(
             )
         }
         super.onEnable()
+    }
+
+    override fun reload() {
+        plugin.launch(Dispatchers.IO) {
+            putAll(
+                storage.loadAll(storage.getAllKeys())
+                    .map { (key, value) ->
+                        key to value.getOrNull()!!
+                    }
+            )
+        }
     }
 
     override fun onDisable() {

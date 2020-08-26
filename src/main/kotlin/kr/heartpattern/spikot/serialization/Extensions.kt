@@ -19,15 +19,15 @@
 package kr.heartpattern.spikot.serialization
 
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.MapSerializer
-import kotlinx.serialization.builtins.list
-import kotlinx.serialization.builtins.set
+import kotlinx.serialization.builtins.SetSerializer
 
 val <T> KSerializer<T>.mutableList: KSerializer<MutableList<T>>
-    get() = list as KSerializer<MutableList<T>>
+    get() = ListSerializer(this) as KSerializer<MutableList<T>>
 
 val <T> KSerializer<T>.mutableSet: KSerializer<MutableSet<T>>
-    get() = set as KSerializer<MutableSet<T>>
+    get() = SetSerializer(this) as KSerializer<MutableSet<T>>
 
 val <K, V> Pair<KSerializer<K>, KSerializer<V>>.mutableMap: KSerializer<MutableMap<K, V>>
     get() = MapSerializer(first, second) as KSerializer<MutableMap<K, V>>

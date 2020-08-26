@@ -17,11 +17,16 @@
 package kr.heartpattern.spikot.serialization.serializer
 
 import kotlinx.serialization.*
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import java.util.*
 
 @Serializer(forClass = UUID::class)
 object UUIDSerializer : KSerializer<UUID> {
-    override val descriptor: SerialDescriptor = PrimitiveDescriptor("UUID", PrimitiveKind.STRING)
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("UUID", PrimitiveKind.STRING)
     override fun serialize(encoder: Encoder, value: UUID) {
         encoder.encodeString(value.toString())
     }

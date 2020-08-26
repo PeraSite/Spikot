@@ -37,7 +37,7 @@ operator fun Player.set(property: MutableFlagProperty, value: Boolean) {
     if (value) {
         PlayerPropertyAdapter.set(this, property, Unit)
     } else {
-        PlayerPropertyAdapter.remove(player, property)
+        PlayerPropertyAdapter.remove(player!!, property)
     }
 }
 

@@ -36,7 +36,7 @@ sealed class DispatcherBukkit : MainCoroutineDispatcher(), Delay {
     }
 
     override fun scheduleResumeAfterDelay(timeMillis: Long, continuation: CancellableContinuation<Unit>) {
-        val task = Bukkit.getScheduler().runTaskLater(spikot, {
+        val task = Bukkit.getScheduler().runTaskLater(spikot, { ->
             with(continuation) {
                 resumeUndispatched(Unit)
             }

@@ -16,13 +16,17 @@
 
 package kr.heartpattern.spikot
 
+import kr.heartpattern.spikot.event.TickEvent
 import kr.heartpattern.spikot.module.IModule
 import kr.heartpattern.spikot.module.SingletonModuleManager
 import kr.heartpattern.spikot.plugin.SpikotPluginManager
 import kr.heartpattern.spikot.utils.catchAll
 import mu.KotlinLogging
+import org.bukkit.Bukkit
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.event.EventHandler
 import org.bukkit.plugin.java.annotation.dependency.Dependency
+import org.bukkit.plugin.java.annotation.plugin.ApiVersion
 import org.bukkit.plugin.java.annotation.plugin.Plugin
 import org.bukkit.scheduler.BukkitRunnable
 import java.io.File
@@ -40,10 +44,10 @@ internal lateinit var spikot: Spikot
  * @since 1.0.0
  * @author ReadyMadeProgrammer
  */
-@Plugin(name = "Spikot", version = "4.0.1-SNAPSHOT")
-@Dependency(plugin = "ProtocolLib")
+@Plugin(name = "Spikot", version = "4.3.0-SNAPSHOT")
+@Dependency(value = "ProtocolLib")
 class Spikot : SpikotPlugin() {
-    val spikotLogger = KotlinLogging.logger{}
+    val spikotLogger = KotlinLogging.logger {}
     internal val enabled = HashSet<String>()
 
     override fun onLoad() {

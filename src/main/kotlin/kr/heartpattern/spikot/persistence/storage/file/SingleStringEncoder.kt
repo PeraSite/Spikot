@@ -16,12 +16,13 @@
 
 package kr.heartpattern.spikot.persistence.storage.file
 
-import kotlinx.serialization.CompositeEncoder
-import kotlinx.serialization.Encoder
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialDescriptor
-import kotlinx.serialization.modules.EmptyModule
-import kotlinx.serialization.modules.SerialModule
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.CompositeEncoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.modules.EmptySerializersModule
+import kotlinx.serialization.modules.SerializersModule
 
 class SingleStringEncoder : Encoder {
     var encoded: String? = null
@@ -38,8 +39,8 @@ class SingleStringEncoder : Encoder {
             field = value
         }
 
-    override val context: SerialModule
-        get() = EmptyModule
+    override val serializersModule: SerializersModule
+        get() = EmptySerializersModule
 
     override fun beginStructure(descriptor: SerialDescriptor, vararg typeSerializers: KSerializer<*>): CompositeEncoder {
         throw UnsupportedOperationException("Cannot use structure in single string encoder")
@@ -91,9 +92,5 @@ class SingleStringEncoder : Encoder {
 
     override fun encodeString(value: String) {
         encoded = value
-    }
-
-    override fun encodeUnit() {
-        encoded = Unit.toString()
     }
 }

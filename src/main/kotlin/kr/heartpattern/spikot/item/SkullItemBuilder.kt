@@ -30,7 +30,7 @@ import java.util.*
  * Configure skull item
  */
 class SkullItemBuilder(itemStack: ItemStack) : ItemBuilder<SkullItemMetaBuilder>(itemStack) {
-    constructor() : this(ItemStack(Material.SKULL_ITEM))
+    constructor() : this(ItemStack(Material.LEGACY_SKULL_ITEM))
 
     override fun meta(build: SkullItemMetaBuilder.() -> Unit) {
         val builder = SkullItemMetaBuilder(item.itemMeta as SkullMeta)
@@ -46,7 +46,7 @@ class SkullItemMetaBuilder(itemMeta: SkullMeta) : ItemMetaBuilder<SkullMeta>(ite
     /**
      * Owner of skull
      */
-    var owner: OfflinePlayer
+    var owner: OfflinePlayer?
         get() = itemMeta.owningPlayer
         set(value) {
             itemMeta.owningPlayer = value
@@ -55,7 +55,7 @@ class SkullItemMetaBuilder(itemMeta: SkullMeta) : ItemMetaBuilder<SkullMeta>(ite
     /**
      * Owing player of skull
      */
-    var owingPlayer: OfflinePlayer
+    var owingPlayer: OfflinePlayer?
         get() = itemMeta.owningPlayer
         set(value) {
             itemMeta.owningPlayer = value
@@ -65,7 +65,7 @@ class SkullItemMetaBuilder(itemMeta: SkullMeta) : ItemMetaBuilder<SkullMeta>(ite
 //Temporal Api
 private fun createSkull0(base64: String): ItemStack {
     val hashed = UUID(base64.hashCode().toLong(), base64.hashCode().toLong())
-    val itemStack = ItemStack(Material.SKULL_ITEM, 1, 3.toShort())
+    val itemStack = ItemStack(Material.LEGACY_SKULL_ITEM, 1, 3.toShort())
     @Suppress("DEPRECATION")
     return Bukkit.getUnsafe().modifyItemStack(itemStack,
         "{SkullOwner:{Id:\"$hashed\",Properties:{textures:[{Value:\"$base64\"}]}}}")

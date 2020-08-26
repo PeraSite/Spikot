@@ -27,7 +27,7 @@ import org.bukkit.inventory.meta.SpawnEggMeta
  * Configure spawn egg item
  */
 class SpawnEggItemBuilder(itemStack: ItemStack) : ItemBuilder<SpawnEggItemMetaBuilder>(itemStack) {
-    constructor() : this(ItemStack(Material.MONSTER_EGG))
+    constructor() : this(ItemStack(Material.LEGACY_MONSTER_EGG))
 
     override fun meta(build: SpawnEggItemMetaBuilder.() -> Unit) {
         val builder = SpawnEggItemMetaBuilder(item.itemMeta as SpawnEggMeta)
