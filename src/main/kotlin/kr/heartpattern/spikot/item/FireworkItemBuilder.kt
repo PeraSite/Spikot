@@ -28,7 +28,7 @@ import org.bukkit.inventory.meta.FireworkMeta
  * Configure firework item
  */
 class FireworkItemBuilder(itemStack: ItemStack) : ItemBuilder<FireworkItemMetaBuilder>(itemStack) {
-    constructor() : this(ItemStack(Material.LEGACY_FIREWORK_CHARGE))
+    constructor() : this(ItemStack(Material.FIREWORK_ROCKET))
 
     override fun meta(build: FireworkItemMetaBuilder.() -> Unit) {
         val builder = FireworkItemMetaBuilder(item.itemMeta as FireworkMeta)

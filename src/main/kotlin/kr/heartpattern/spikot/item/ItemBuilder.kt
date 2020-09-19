@@ -20,6 +20,7 @@ package kr.heartpattern.spikot.item
 
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.Damageable
 import org.bukkit.inventory.meta.ItemMeta
 
 /**
@@ -73,10 +74,10 @@ abstract class ItemBuilder<T : ItemMetaBuilder<*>>(protected val item: ItemStack
     /**
      * Durability of item
      */
-    var durability: Short
-        get() = item.durability
+    var durability: Int
+        get() = (item.itemMeta as? Damageable)?.damage ?: 0
         set(value) {
-            item.durability = value
+            (item.itemMeta as Damageable).damage = value
         }
 
     /**

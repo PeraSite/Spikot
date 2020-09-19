@@ -121,13 +121,13 @@ internal object MenuManager : AbstractModule() {
     @EventHandler
     fun onSlotClick(event: InventoryClickEvent) {
         val title = event.whoClicked.openInventory.title
-        if (title == null || !title.hasInvisible()) {
+        if (!title.hasInvisible()) {
             return
         }
         val inventoryId = title.findInvisible()
         val provider = openedInventory[inventoryId]?.module as MenuProvider? ?: return
         provider.onInteract(event)
-        if (event.view.topInventory != null && event.rawSlot < event.view.topInventory.size) {
+        if (event.rawSlot < event.view.topInventory.size) {
             val slotId = event.slot
             val x = slotId % 9
             val y = slotId / 9

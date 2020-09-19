@@ -36,8 +36,8 @@ object LocationSerializer : KSerializer<Location> {
         element("x", Double.serializer().descriptor)
         element("y", Double.serializer().descriptor)
         element("z", Double.serializer().descriptor)
-        element("yaw", Double.serializer().descriptor)
-        element("pitch", Double.serializer().descriptor)
+        element("yaw", Float.serializer().descriptor)
+        element("pitch", Float.serializer().descriptor)
     }
 
     override fun serialize(encoder: Encoder, value: Location) {
@@ -46,8 +46,8 @@ object LocationSerializer : KSerializer<Location> {
             encodeDoubleElement(descriptor, 1, value.x)
             encodeDoubleElement(descriptor, 2, value.y)
             encodeDoubleElement(descriptor, 3, value.z)
-            encodeFloatElement(descriptor, 4, value.pitch)
-            encodeFloatElement(descriptor, 5, value.yaw)
+            encodeFloatElement(descriptor, 4, value.yaw)
+            encodeFloatElement(descriptor, 5, value.pitch)
             endStructure(descriptor)
         }
     }
@@ -58,8 +58,8 @@ object LocationSerializer : KSerializer<Location> {
             var x: Double? = null
             var y: Double? = null
             var z: Double? = null
-            var pitch: Float? = null
             var yaw: Float? = null
+            var pitch: Float? = null
             loop@ while (true) {
                 when (val i = decodeElementIndex(descriptor)) {
                     CompositeDecoder.DECODE_DONE -> break@loop
@@ -67,8 +67,8 @@ object LocationSerializer : KSerializer<Location> {
                     1 -> x = decodeDoubleElement(descriptor, i)
                     2 -> y = decodeDoubleElement(descriptor, i)
                     3 -> z = decodeDoubleElement(descriptor, i)
-                    4 -> pitch = decodeFloatElement(descriptor, i)
-                    5 -> yaw = decodeFloatElement(descriptor, i)
+                    4 -> yaw = decodeFloatElement(descriptor, i)
+                    5 -> pitch = decodeFloatElement(descriptor, i)
                 }
             }
             endStructure(descriptor)

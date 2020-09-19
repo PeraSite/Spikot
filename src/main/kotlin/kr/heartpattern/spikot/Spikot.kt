@@ -46,6 +46,7 @@ internal lateinit var spikot: Spikot
  */
 @Plugin(name = "Spikot", version = "4.3.0-SNAPSHOT")
 @Dependency(value = "ProtocolLib")
+@ApiVersion(ApiVersion.Target.v1_13)
 class Spikot : SpikotPlugin() {
     val spikotLogger = KotlinLogging.logger {}
     internal val enabled = HashSet<String>()

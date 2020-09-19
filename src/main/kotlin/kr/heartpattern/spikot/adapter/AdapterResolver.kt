@@ -47,7 +47,7 @@ abstract class AdapterResolver<T : IAdapter>(val target: KClass<T>) : AbstractMo
             }
             .map { (type, plugin) -> ModuleManager.createModule(type, plugin) }
             .filter { canApply(it.module!! as T) }
-            .maxWith(Comparator { o1, o2 -> if (select(o1.module!! as T, o2.module!! as T) === o1.module!!) 1 else -1 })
+            .maxWithOrNull { o1, o2 -> if (select(o1.module!! as T, o2.module!! as T) === o1.module!!) 1 else -1 }
             ?: throw IllegalStateException("Cannot find proper adapter for ${target.simpleName}")
 
         handler.load()

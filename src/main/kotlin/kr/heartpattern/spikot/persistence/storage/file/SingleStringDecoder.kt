@@ -39,7 +39,7 @@ class SingleStringDecoder(
     override val updateMode: UpdateMode
         get() = UpdateMode.BANNED
 
-    override fun beginStructure(descriptor: SerialDescriptor, vararg typeParams: KSerializer<*>): CompositeDecoder {
+    override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
         throw UnsupportedOperationException("Cannot use structure in single string decoder")
     }
 

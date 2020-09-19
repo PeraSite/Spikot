@@ -41,7 +41,7 @@ class BannerItemMetaBuilder(itemMeta: BannerMeta) : ItemMetaBuilder<BannerMeta>(
  * Configure banner item
  */
 class BannerItemBuilder(item: ItemStack) : ItemBuilder<BannerItemMetaBuilder>(item) {
-    constructor() : this(ItemStack(Material.LEGACY_BANNER))
+    constructor() : this(ItemStack(Material.BLACK_BANNER))
 
     override fun meta(build: BannerItemMetaBuilder.() -> Unit) {
         val builder = BannerItemMetaBuilder(item.itemMeta as BannerMeta)
