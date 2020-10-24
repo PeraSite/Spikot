@@ -16,8 +16,10 @@
 
 package kr.heartpattern.spikot.persistence.repository
 
+import kotlinx.coroutines.runBlocking
 import kr.heartpattern.spikot.module.*
 import kr.heartpattern.spikot.persistence.storage.Storage
+import org.bukkit.Bukkit
 
 /**
  * Represent data repository

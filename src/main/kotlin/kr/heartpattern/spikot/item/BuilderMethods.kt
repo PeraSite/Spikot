@@ -319,26 +319,3 @@ fun skull(itemStack: ItemStack, build: SkullItemBuilder.() -> Unit): ItemStack {
     builder.build()
     return builder.toItemStack()
 }
-
-/**
- * Create new spawn egg
- * @param build lambda that configure ItemStack
- * @return New spawn egg
- */
-fun spawnEgg(build: SpawnEggItemBuilder.() -> Unit): ItemStack {
-    val builder = SpawnEggItemBuilder()
-    builder.build()
-    return builder.toItemStack()
-}
-
-/**
- * Modify given spawn egg
- * @param itemStack ItemStack to modify
- * @param build lambda that modify ItemStack
- * @return Modified spawn egg
- */
-fun spawnEgg(itemStack: ItemStack, build: SpawnEggItemBuilder.() -> Unit): ItemStack {
-    val builder = SpawnEggItemBuilder(itemStack)
-    builder.build()
-    return builder.toItemStack()
-}

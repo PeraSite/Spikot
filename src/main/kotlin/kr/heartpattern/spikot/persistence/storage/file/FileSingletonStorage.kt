@@ -49,8 +49,8 @@ open class FileSingletonStorage<V> private constructor(
         this.file = file
     }
 
-    private lateinit var file: File
-    private var namespace: String? = null
+    lateinit var file: File
+    var namespace: String? = null
 
     override fun onLoad() {
         if (namespace != null)
@@ -75,7 +75,7 @@ open class FileSingletonStorage<V> private constructor(
                 try {
                     file.writeText(format.serializer.encodeToString(serializer, value.value))
                 } catch (ex: Exception) {
-                    throw RuntimeException("${file.name} save exception: value = ${value.value.toString()}")
+                    println("Couldn't save to ${file.path}:value = ${value.value.toString()}")
                 }
             } else {
                 file.delete()

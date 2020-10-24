@@ -17,6 +17,7 @@
 package kr.heartpattern.spikot.persistence.storage.file
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -26,6 +27,8 @@ import kr.heartpattern.spikot.module.AbstractModule
 import kr.heartpattern.spikot.persistence.storage.KeyValueStorage
 import kr.heartpattern.spikot.serialization.StringSerializeFormat
 import java.io.File
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 open class FileKeyValueStorage<K, V> private constructor(
     private val keySerializer: KSerializer<K>,
@@ -51,8 +54,8 @@ open class FileKeyValueStorage<K, V> private constructor(
     }
 
 
-    private lateinit var directory: File
-    private var namespace: String? = null
+    lateinit var directory: File
+    var namespace: String? = null
 
     override fun onLoad() {
         if (namespace != null)
@@ -62,44 +65,42 @@ open class FileKeyValueStorage<K, V> private constructor(
     }
 
     override suspend fun getAllKeys(): Collection<K> {
-        return withContext(Dispatchers.IO) {
-            directory
-                .listFiles()!!
-                .filter {
-                    it.extension == format.fileExtensionName
-                }
-                .map {
-                    deserialize(keySerializer, it.nameWithoutExtension)
-                }
-        }
+        return directory
+            .listFiles()!!
+            .filter {
+                it.extension == format.fileExtensionName
+            }
+            .map {
+                deserialize(keySerializer, it.nameWithoutExtension)
+            }
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
     override suspend fun save(key: K, value: Option<V>) {
-        withContext(Dispatchers.IO) {
-            val file = File(directory, serialize(keySerializer, key) + ".${format.fileExtensionName}")
-            if (value is Just) {
-                file.createNewFile()
-                try {
-                    file.writeText(format.serializer.encodeToString(valueSerializer, value.value))
-                } catch (ex: Exception) {
-                    throw RuntimeException("Cannot save to ${file.path}: key = ${key.toString()}, value = ${value.value.toString()}")
-                }
-            } else {
-                file.delete()
+        val file = File(directory, serialize(keySerializer, key) + ".${format.fileExtensionName}")
+        if (value is Just) {
+            file.createNewFile()
+            try {
+                file.writeText(format.serializer.encodeToString(valueSerializer, value.value))
+            } catch (ex: Exception) {
+                println("Couldn't save to ${file.path}: key = ${key.toString()}, value = ${value.value.toString()}")
             }
+        } else {
+            file.delete()
         }
     }
 
+
+    @OptIn(ExperimentalSerializationApi::class)
     override suspend fun load(key: K): Option<V> {
-        return withContext(Dispatchers.IO) {
-            val file = File(directory, serialize(keySerializer, key) + ".${format.fileExtensionName}")
-            if (file.exists()) {
-                format.serializer.decodeFromString(valueSerializer, file.readText()).just
-            } else {
-                None
-            }
+        val file = File(directory, serialize(keySerializer, key) + ".${format.fileExtensionName}")
+        return if (file.exists()) {
+            format.serializer.decodeFromString(valueSerializer, file.readText()).just
+        } else {
+            None
         }
     }
+
 
     override suspend fun clear() {
         withContext(Dispatchers.IO) {

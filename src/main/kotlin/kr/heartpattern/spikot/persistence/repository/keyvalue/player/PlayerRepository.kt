@@ -25,6 +25,7 @@ import kr.heartpattern.spikot.misc.option
 import kr.heartpattern.spikot.module.BaseModule
 import kr.heartpattern.spikot.module.ModulePriority
 import kr.heartpattern.spikot.module.ServerModule
+import kr.heartpattern.spikot.module.load
 import kr.heartpattern.spikot.persistence.repository.AbstractRepository
 import kr.heartpattern.spikot.persistence.repository.emptyKeyValueStorage
 import kr.heartpattern.spikot.persistence.storage.KeyValueStorage
@@ -115,6 +116,14 @@ abstract class PlayerRepository<V : Any>(
             if (player.uniqueId in holder)
                 return holder[player.uniqueId]!!
             delayTick(1)
+        }
+    }
+
+    override fun reload() {
+        runBlocking {
+            for (player in Bukkit.getOnlinePlayers()) {
+                load(player)
+            }
         }
     }
 

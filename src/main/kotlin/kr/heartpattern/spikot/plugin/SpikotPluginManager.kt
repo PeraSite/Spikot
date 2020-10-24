@@ -35,6 +35,7 @@ import kotlin.reflect.KClass
  */
 object SpikotPluginManager : IBootstrap {
     private val logger = KotlinLogging.logger {}
+
     @PublishedApi
     internal val plugins = HashSet<PluginWrapper>()
 
@@ -94,7 +95,7 @@ object SpikotPluginManager : IBootstrap {
             if (classes != null) {
                 for (clazz in classes) {
                     @Suppress("UNCHECKED_CAST")
-                    block(AnnotatedClass(clazz, plugin.plugin, clazz.annotations.first{type.isInstance(it)} as T))
+                    block(AnnotatedClass(clazz, plugin.plugin, clazz.annotations.first { type.isInstance(it) } as T))
                 }
             }
         }
@@ -111,6 +112,14 @@ object SpikotPluginManager : IBootstrap {
             list += annotatedClass
         }
         return list.iterator()
+    }
+
+    inline fun <reified T : Annotation> findClasses(): List<AnnotatedClass<T>> {
+        val list = LinkedList<AnnotatedClass<T>>()
+        forEachAnnotation<T> { annotatedClass ->
+            list += annotatedClass
+        }
+        return list
     }
 }
 

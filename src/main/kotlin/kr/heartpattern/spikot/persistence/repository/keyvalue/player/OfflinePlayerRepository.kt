@@ -113,6 +113,14 @@ abstract class OfflinePlayerRepository<V : Any>(
         onlineStorage.remove(player.uniqueId)
     }
 
+    override fun reload() {
+        runBlocking {
+            for (player in Bukkit.getOnlinePlayers()) {
+                onlineStorage[player.uniqueId] = load(player.uniqueId)
+            }
+        }
+    }
+
     operator fun get(player: Player): V {
         return onlineStorage[player.uniqueId]!!
     }

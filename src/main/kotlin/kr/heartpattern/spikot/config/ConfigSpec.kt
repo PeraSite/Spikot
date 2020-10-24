@@ -38,7 +38,7 @@ abstract class ConfigSpec(
 ) {
     internal lateinit var path: String
     internal lateinit var yaml: YamlConfiguration
-    internal fun initialize() {
+    fun initialize() {
         this.javaClass.kotlin.declaredMemberProperties.stream().forEach { it.get(this) }
     }
 

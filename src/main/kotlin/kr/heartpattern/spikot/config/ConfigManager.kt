@@ -28,7 +28,7 @@ import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
 
 @ServerModule(ModulePriority.SYSTEM)
-internal object ConfigManager : AbstractModule() {
+object ConfigManager : AbstractModule() {
     private lateinit var root: File
     override fun onEnable() {
         SpikotPluginManager.forEachAnnotation<Config> { (kclass, plugin) ->
