@@ -17,7 +17,6 @@
 package kr.heartpattern.spikot.serialization.serializer
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerialDescriptor
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.Serializer
 import kotlinx.serialization.builtins.serializer

@@ -36,8 +36,6 @@ class SingleStringDecoder(
 
     override val serializersModule: SerializersModule
         get() = EmptySerializersModule
-    override val updateMode: UpdateMode
-        get() = UpdateMode.BANNED
 
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
         throw UnsupportedOperationException("Cannot use structure in single string decoder")

@@ -44,7 +44,7 @@ sealed class DispatcherBukkit : MainCoroutineDispatcher(), Delay {
         continuation.invokeOnCancellation { task.cancel() }
     }
 
-    override fun invokeOnTimeout(timeMillis: Long, block: Runnable): DisposableHandle {
+    override fun invokeOnTimeout(timeMillis: Long, block: Runnable, context: CoroutineContext): DisposableHandle {
         val task = Bukkit.getScheduler().runTaskLater(spikot, block, timeMillis / 50)
         return object : DisposableHandle {
             override fun dispose() {
