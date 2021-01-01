@@ -10,11 +10,11 @@ plugins {
 
 val kotlin_version = "1.4.21"
 val coroutine_version = "1.4.1"
-val paper_version = "1.16.2-R0.1-SNAPSHOT"
+val paper_version = "1.16.4-R0.1-SNAPSHOT"
 val serialization_version = "1.0.1"
 
 group = "kr.heartpattern"
-version = "4.3.0-SNAPSHOT"
+version = "4.4.0-SNAPSHOT"
 
 repositories {
     maven("https://maven.heartpattern.io/repository/maven-public/")
@@ -119,7 +119,7 @@ if (File("local.gradle.kts").exists())
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            artifactId = "Spikot"
+            artifactId = "SpikotLegacy"
             from(components["java"])
 //            artifact(tasks["dokkaJar"])
             artifact(tasks["sourcesJar"])

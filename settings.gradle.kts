@@ -1,4 +1,4 @@
-rootProject.name = "Spikot"
+rootProject.name = "SpikotLegacy"
 pluginManagement {
     repositories {
         gradlePluginPortal()
