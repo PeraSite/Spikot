@@ -50,7 +50,7 @@ private object PacketListenerModuleInterceptor : IModuleInterceptor {
                 plugin,
                 annotation.priority,
                 annotation.packets.map {
-                    it.java.getDeclaredField("TYPE").get(null) as PacketType
+                    it.java.getDeclaredField("type").get(null) as PacketType
                 },
                 *options
             ) {

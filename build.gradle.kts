@@ -28,6 +28,7 @@ dependencies {
     api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
     api("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:$coroutine_version")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutine_version")
     api("org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version")
 
@@ -83,7 +84,7 @@ tasks {
         }
     }
 
-    create<Jar>("createPlugin") {
+    val createPlugin = create<Jar>("createPlugin") {
         archiveFileName.set("Spikot-Plugin-${archiveVersion.get()}.jar")
         from(
             configurations.api.get().map {
@@ -94,6 +95,10 @@ tasks {
             }
         )
         with(jar.get())
+    }
+
+    "build" {
+        dependsOn(createPlugin)
     }
 
     create<Jar>("sourcesJar") {
