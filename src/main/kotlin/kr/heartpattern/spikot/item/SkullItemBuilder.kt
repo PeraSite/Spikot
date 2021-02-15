@@ -18,7 +18,12 @@
 
 package kr.heartpattern.spikot.item
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kr.heartpattern.spikot.menu.MenuProvider
 import kr.heartpattern.spikot.mojangapi.PlayerProfile
+import kr.heartpattern.spikot.mojangapi.getProfile
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
@@ -67,8 +72,10 @@ private fun createSkull0(base64: String): ItemStack {
     val hashed = UUID(base64.hashCode().toLong(), base64.hashCode().toLong())
     val itemStack = ItemStack(Material.PLAYER_HEAD, 1)
     @Suppress("DEPRECATION")
-    return Bukkit.getUnsafe().modifyItemStack(itemStack,
-        "{SkullOwner:{Id:\"$hashed\",Properties:{textures:[{Value:\"$base64\"}]}}}")
+    return Bukkit.getUnsafe().modifyItemStack(
+        itemStack,
+        "{SkullOwner:{Id:\"$hashed\",Properties:{textures:[{Value:\"$base64\"}]}}}"
+    )
 }
 
 /**
@@ -86,5 +93,34 @@ fun createSkull(profile: PlayerProfile): ItemStack {
  * @return Created skull item
  */
 fun createSkull(base64: String): ItemStack {
-    return createSkull0(Base64.getEncoder().encodeToString(("{\"textures\":{\"SKIN\":{\"url\":\"$base64\"}}}").toByteArray()))
+    return createSkull0(
+        Base64.getEncoder().encodeToString(("{\"textures\":{\"SKIN\":{\"url\":\"$base64\"}}}").toByteArray())
+    )
+}
+
+fun MenuProvider.asyncSkull(slot: Int, player: OfflinePlayer, block: SkullItemBuilder.() -> Unit) {
+    asyncSkull(slot, player.uniqueId, block)
+}
+
+fun MenuProvider.asyncSkull(slot: Int, uuid: UUID, block: SkullItemBuilder.() -> Unit) {
+    with(menu) {
+        slot(slot) {
+            display = skull {
+                block()
+            }
+        }
+
+        plugin.launch(Dispatchers.Main) {
+            val head = createSkull(getProfile(uuid))
+            withContext(Dispatchers.Default) {
+                update {
+                    slot(slot) {
+                        display = skull(head) {
+                            block()
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

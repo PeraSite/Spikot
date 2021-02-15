@@ -25,7 +25,7 @@ import org.bukkit.inventory.meta.ItemMeta
  * Configure ItemMeta
  */
 @ItemDslMarker
-open class ItemMetaBuilder<T : ItemMeta>(internal val itemMeta: T) {
+open class ItemMetaBuilder<T : ItemMeta>(val itemMeta: T) {
 
     /**
      * Add unbreakable attribute to item
