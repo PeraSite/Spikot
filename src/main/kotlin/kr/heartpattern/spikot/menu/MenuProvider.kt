@@ -70,7 +70,7 @@ abstract class MenuProvider : AbstractModule() {
      * Update content of inventory safely.
      */
     @Suppress("unused")
-    internal fun update(build: MenuBuilder.() -> Unit) {
+    fun update(build: MenuBuilder.() -> Unit) {
         menu.build()
         if (isOpen) {
             spikot.runNextSync {

@@ -136,7 +136,7 @@ abstract class AbstractModule : IModule {
     /**
      * Plugin which define this module
      */
-    internal val plugin: SpikotPlugin by contextDelegate(IModule.PluginProperty).nonnull()
+     val plugin: SpikotPlugin by contextDelegate(IModule.PluginProperty).nonnull()
 
     /**
      * Logger for this module

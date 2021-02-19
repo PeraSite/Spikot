@@ -17,7 +17,7 @@ group = "kr.heartpattern"
 version = "4.4.0-SNAPSHOT"
 
 repositories {
-    maven("https://maven.heartpattern.io/repository/maven-public/")
+    maven("https://maven.heartpattern.kr/repository/maven-public/")
     maven("https://jitpack.io")
     mavenLocal()
 }
