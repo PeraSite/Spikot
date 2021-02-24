@@ -16,6 +16,7 @@
 
 package kr.heartpattern.spikot.persistence.storage.file
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.CompositeEncoder
@@ -23,6 +24,7 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 
+@OptIn(ExperimentalSerializationApi::class)
 class SingleStringEncoder : Encoder {
     var encoded: String? = null
         get() {
@@ -68,7 +70,12 @@ class SingleStringEncoder : Encoder {
     override fun encodeFloat(value: Float) {
         encoded = value.toString()
     }
-
+    
+    @ExperimentalSerializationApi
+    override fun encodeInline(inlineDescriptor: SerialDescriptor): Encoder {
+        throw UnsupportedOperationException("Cannot encode inline in single string encoder")
+    }
+    
     override fun encodeInt(value: Int) {
         encoded = value.toString()
     }

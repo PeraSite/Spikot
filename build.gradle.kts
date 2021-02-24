@@ -1,17 +1,17 @@
 import org.jetbrains.dokka.ExternalDocumentationLink
 
 plugins {
-    kotlin("jvm") version "1.4.21"
-    kotlin("kapt") version "1.4.21"
-    kotlin("plugin.serialization") version "1.4.21"
+    kotlin("jvm") version "1.4.30"
+    kotlin("kapt") version "1.4.30"
+    kotlin("plugin.serialization") version "1.4.30"
     id("org.jetbrains.dokka") version "1.4.20"
     id("maven-publish")
 }
 
-val kotlin_version = "1.4.21"
-val coroutine_version = "1.4.1"
-val paper_version = "1.16.4-R0.1-SNAPSHOT"
-val serialization_version = "1.0.1"
+val kotlin_version = "1.4.30"
+val coroutine_version = "1.4.2"
+val paper_version = "1.16.5-R0.1-SNAPSHOT"
+val serialization_version = "1.1.0-RC"
 
 group = "kr.heartpattern"
 version = "4.4.0-SNAPSHOT"

@@ -18,11 +18,13 @@ package kr.heartpattern.spikot.persistence.storage.file
 
 import kotlinx.serialization.*
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.nullable
 import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 
+@OptIn(ExperimentalSerializationApi::class)
 class SingleStringDecoder(
     value: String
 ) : Decoder {
@@ -64,7 +66,11 @@ class SingleStringDecoder(
     override fun decodeFloat(): Float {
         return value.toFloat()
     }
-
+    
+    override fun decodeInline(inlineDescriptor: SerialDescriptor): Decoder {
+        throw UnsupportedOperationException("Cannot decode not inline in single string decoder")
+    }
+    
     override fun decodeInt(): Int {
         return value.toInt()
     }
